@@ -1,0 +1,22 @@
+$kind: http-request
+name: Get Analytics
+method: GET
+url: '{{base_url}}/api/finance/analytics/'
+order: 2000
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{jwt_token}}'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Response contains totals property", function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property('totals');
+      });

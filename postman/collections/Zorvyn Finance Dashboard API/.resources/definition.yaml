@@ -1,0 +1,7 @@
+$kind: collection
+name: Zorvyn Finance Dashboard API
+variables:
+  - key: base_url
+    value: 'http://zorvynsamarfinancebackend-env.eba-x3uyuuvv.eu-north-1.elasticbeanstalk.com'
+  - key: jwt_token
+    value: ''

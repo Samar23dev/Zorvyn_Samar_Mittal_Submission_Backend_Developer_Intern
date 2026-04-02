@@ -1,0 +1,30 @@
+$kind: http-request
+name: Create Transaction
+method: POST
+url: '{{base_url}}/api/finance/transactions/'
+order: 3000
+headers:
+  - key: Content-Type
+    value: application/json
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{jwt_token}}'
+body:
+  type: json
+  content: |-
+    {
+      "amount": "5000.00",
+      "type": "INCOME",
+      "category": "Salary",
+      "date": "2026-04-02",
+      "notes": "First paycheck"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 201 Created", function () {
+          pm.response.to.have.status(201);
+      });

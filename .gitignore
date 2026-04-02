@@ -7,9 +7,30 @@ __pycache__/
 venv/
 env/
 ENV/
+.venv/
+
+# Environment Secrets
+.env
+secret.key
+
+# Static Files (Generated locally)
+staticfiles/
+
+# Build and Packaging
+aws_deployment.zip
+*.zip
+*.tar.gz
 
 # Database
 db.sqlite3
+*.db
 
-# Environment Variables
-.env
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+    

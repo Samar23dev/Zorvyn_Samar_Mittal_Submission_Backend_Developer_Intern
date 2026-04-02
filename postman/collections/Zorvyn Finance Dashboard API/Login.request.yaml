@@ -1,0 +1,33 @@
+$kind: http-request
+name: Login
+method: POST
+url: '{{base_url}}/api/auth/login/'
+order: 1000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "username": "adminsamar",
+      "password": "Admin@12345"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Response has access token", function () {
+          var jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property('access');
+          
+          // Save the access token to collection variable
+          if (jsonData.access) {
+              pm.collectionVariables.set("jwt_token", jsonData.access);
+              console.log("JWT token saved to collection variable");
+          }
+      });
