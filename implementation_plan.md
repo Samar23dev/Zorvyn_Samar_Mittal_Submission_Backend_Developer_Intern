@@ -113,7 +113,7 @@ Plus manual: `register/`, `me/`, `login/`, `token/refresh/`
 ---
 
 ## ✅ Phase 3 — Finance App: Transactions CRUD
-**Status: COMPLETE** — verified `2026-04-02`
+**Status: COMPLETE** 
 
 ### `finance/models.py`
 ```python
