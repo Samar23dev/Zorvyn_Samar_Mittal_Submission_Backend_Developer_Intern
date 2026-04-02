@@ -18,7 +18,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ─────────────────────────────────────────────
 SECRET_KEY   = config('SECRET_KEY')
 DEBUG        = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost', cast=Csv())
+# Accept all hosts so AWS Load Balancer domains don't generate 400 Bad Requests
+ALLOWED_HOSTS = ['*']
 
 
 # ─────────────────────────────────────────────
@@ -181,6 +182,9 @@ SPECTACULAR_SETTINGS = {
 # ─────────────────────────────────────────────
 # CORS  (allow frontend dev servers — loaded from .env)
 # ─────────────────────────────────────────────
+CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL_ORIGINS', default=True, cast=bool)
+
+# Only used if CORS_ALLOW_ALL_ORIGINS is False
 CORS_ALLOWED_ORIGINS = config(
     'CORS_ALLOWED_ORIGINS',
     default='http://localhost:3000',
