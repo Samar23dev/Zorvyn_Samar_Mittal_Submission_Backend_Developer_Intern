@@ -51,7 +51,7 @@ Django REST Framework, and `djangorestframework-simplejwt`.
 ---
 
 ## ✅ Phase 2 — Users App: Auth & Permissions
-**Status: COMPLETE** — verified `2026-04-02`
+**Status: COMPLETE** 
 
 ### Files
 
