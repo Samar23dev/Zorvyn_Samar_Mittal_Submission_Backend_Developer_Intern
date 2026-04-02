@@ -1,6 +1,40 @@
 # Zorvyn Finance Dashboard — Backend API
 
+> [!TIP]
+> **Live API Documentation:** [Click here to view the live Swagger UI](http://zorvynsamarfinancebackend-env.eba-x3uyuuvv.eu-north-1.elasticbeanstalk.com/api/docs/)
+
+
+## Developed By: Samar Mittal IIIT Pune
 An enterprise-grade, Role-Based Finance Dashboard API built to securely manage user transactions, analytics, and permissions across different tiered roles. This repository was designed specifically to satisfy the requirements of advanced access-control logic, data persistence, and summary-level endpoints.
+
+## 🏗️ System Architecture
+
+```mermaid
+graph TD
+    User((User)) -->|HTTPS| AWS_EB[AWS Elastic Beanstalk]
+    subgraph "Django Application"
+        AWS_EB --> Gunicorn[Gunicorn WSGI]
+        Gunicorn --> Django[Django Core]
+        Django --> DRF[Django REST Framework]
+        
+        subgraph "Security Layer"
+            DRF --> SimpleJWT[JWT Authentication]
+            SimpleJWT --> Permissions[RBAC Permissions Check]
+        end
+        
+        subgraph "Business Logic"
+            Permissions --> UsersApp[Users App / CustomUser]
+            Permissions --> FinanceApp[Finance App / Transaction]
+            FinanceApp --> Analytics[Aggregation Logic]
+        end
+    end
+    
+    UsersApp --> DB[(PostgreSQL / Supabase)]
+    FinanceApp --> DB
+    
+    DRF --> Swagger[OpenAPI / Swagger UI]
+```
+
 
 ---
 
@@ -169,5 +203,26 @@ python manage.py runserver
 
 ---
 
-## 📖 API Documentation Reference
-Once the server is running, the interactive Swagger documentation is live at: `http://127.0.0.1:8000/api/docs/`
+## 📖 Complete API Reference
+
+The interactive Swagger documentation is live at: [Live Swagger UI](http://zorvynsamarfinancebackend-env.eba-x3uyuuvv.eu-north-1.elasticbeanstalk.com/api/docs/) or `http://127.0.0.1:8000/api/docs/` when running locally.
+
+| Method | URL | Auth | Description |
+|---|---|---|---|
+| POST | `/api/auth/register/` | None | Register new user (defaults to VIEWER) |
+| POST | `/api/auth/login/` | None | Get JWT access + refresh tokens |
+| POST | `/api/auth/token/refresh/` | None | Refresh access token |
+| GET | `/api/auth/me/` | Bearer | Current user's own profile |
+| GET | `/api/auth/users/` | Bearer + Admin | List all users |
+| GET | `/api/auth/users/<id>/` | Bearer + Admin | Retrieve any user |
+| PATCH | `/api/auth/users/<id>/` | Bearer + Admin | Update role / email / username / active status |
+| DELETE | `/api/auth/users/<id>/` | Bearer + Admin | Soft-deactivate user (is_active=False) |
+| GET | `/api/finance/transactions/` | Bearer | List transactions (role-scoped) |
+| POST | `/api/finance/transactions/` | Bearer + Admin | Create transaction |
+| GET | `/api/finance/transactions/<id>/` | Bearer | Get single transaction |
+| PATCH | `/api/finance/transactions/<id>/` | Bearer + Admin | Update transaction |
+| DELETE | `/api/finance/transactions/<id>/` | Bearer + Admin | Soft-delete transaction |
+| GET | `/api/finance/analytics/` | Bearer + Analyst/Admin | Aggregated totals by category |
+| GET | `/api/docs/` | None | Swagger UI |
+| GET | `/api/schema/` | None | OpenAPI schema (JSON) |
+
